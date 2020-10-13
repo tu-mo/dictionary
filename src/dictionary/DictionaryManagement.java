@@ -1,4 +1,4 @@
-package main.java.dictionary;
+package dictionary;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -36,7 +36,9 @@ public class DictionaryManagement {
     }
 
     public void insertFromFile() throws IOException {
-        try (BufferedReader buff = new BufferedReader(new FileReader("dtb.txt"))) {
+        BufferedReader buff = null;
+        try  {
+            buff = new BufferedReader(new FileReader("dtb.txt"));
             String str = null;
             String target = null;
             String explain = null;
@@ -62,6 +64,8 @@ public class DictionaryManagement {
 
         } catch (IOException exc) {
             System.out.println(exc.getMessage());
+        } finally {
+            buff.close();
         }
     }
 }

@@ -1,4 +1,4 @@
-package main.java.dictionary;
+package dictionary;
 class Word {
 
     private String target;

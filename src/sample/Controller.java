@@ -1,6 +1,7 @@
-package main.java.sample;
+package sample;
 
-import main.java.dictionary.DictionaryManagement;
+
+import dictionary.DictionaryManagement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
