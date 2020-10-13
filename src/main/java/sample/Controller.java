@@ -22,10 +22,10 @@ public class Controller {
     public void submit(ActionEvent event) throws IOException {
 
         String text = textField.getText();
-        DictionaryManagement ab = new DictionaryManagement();
-        ab.read();
-        String a = ab.explain(textField.getText());
-        textArea.setText(a);
+        DictionaryManagement dictionaryManagement = new DictionaryManagement();
+        dictionaryManagement.insertFromFile();
+        String str = dictionaryManagement.dictionarySearch(textField.getText());
+        textArea.setText(str);
 
     }
 }
