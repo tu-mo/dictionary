@@ -26,6 +26,31 @@ public class DictionaryManagement {
         return null;
     }
 
+    public ArrayList suggest(String str) {
+        ArrayList arrayList = new ArrayList();
+        int index = hash(str);
+        for (int i = 0; i < dictionary.getLists()[index].size(); i++) {
+            if (((Word)dictionary.getLists()[index].get(i)).getTarget().contains(str)) {
+                arrayList.add(((Word)dictionary.getLists()[index].get(i)).getTarget());
+            }
+        }
+        return arrayList;
+    }
+
+    public void dictionaryDelete(String str) {
+        int index = hash(str);
+        for (int i = 0; i < dictionary.getLists()[index].size(); i++) {
+            if (((Word)dictionary.getLists()[index].get(i)).getTarget().equals(str)) {
+                dictionary.getLists()[index].remove(i);
+            }
+        }
+    }
+
+    public void dictionaryAdd(Word word) {
+        int index = hash(word.getTarget());
+        dictionary.getLists()[index].add(word);
+    }
+
 
     public void setDictionary(Dictionary dictionary) {
         this.dictionary = dictionary;
@@ -37,7 +62,7 @@ public class DictionaryManagement {
 
     public void insertFromFile() throws IOException {
         BufferedReader buff = null;
-        try  {
+        try {
             buff = new BufferedReader(new FileReader("dtb.txt"));
             String str = null;
             String target = null;

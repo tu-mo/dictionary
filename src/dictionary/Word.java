@@ -1,5 +1,5 @@
 package dictionary;
-class Word {
+public class Word {
 
     private String target;
     private String explain;
