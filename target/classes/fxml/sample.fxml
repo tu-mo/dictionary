@@ -14,64 +14,59 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <top>
-      <AnchorPane prefHeight="89.0" prefWidth="600.0" style="-fx-border-color: #7bcc6d;" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" layoutX="307.0" layoutY="25.0" prefHeight="43.0" prefWidth="187.0" text="DICTIONARY" textFill="#7bcc6d">
-               <font>
-                  <Font name="System Bold Italic" size="29.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="72.0" fitWidth="138.0" layoutX="514.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../icon/im2.png" />
-               </image>
-            </ImageView>
-            <MenuBar layoutY="2.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Save" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#deleteEvent" text="Delete" />
-                        <MenuItem mnemonicParsing="false" onAction="#addEvent" text="Add" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeEvent" text="Change" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-         </children>
-      </AnchorPane>
-   </top>
-   <left>
-      <AnchorPane prefHeight="310.0" prefWidth="205.0" BorderPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="textField" layoutX="19.0" onKeyReleased="#suggestEvent" promptText="nhap tu can tim..." />
-            <Button layoutX="167.0" mnemonicParsing="false" onAction="#searchEvent" prefHeight="26.0" prefWidth="58.0" text="Search" />
-            <ImageView fitHeight="17.0" fitWidth="35.0" layoutX="1.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../icon/search.png" />
-               </image>
-            </ImageView>
-            <ListView fx:id="listView" layoutX="19.0" layoutY="25.0" onMouseClicked="#clickEvent" prefHeight="289.0" prefWidth="148.8" />
-         </children></AnchorPane>
-   </left>
-   <right>
-      <AnchorPane prefHeight="310.0" prefWidth="48.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" text="Speak" />
-         </children></AnchorPane>
-   </right>
-   <center>
-      <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </center>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <top>
+        <AnchorPane prefHeight="89.0" prefWidth="600.0" style="-fx-border-color: #7bcc6d;" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" layoutX="415.0" layoutY="25.0" prefHeight="43.0" prefWidth="187.0" text="DICTIONARY" textFill="#7bcc6d">
+                    <font>
+                        <Font name="System Bold Italic" size="29.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="72.0" fitWidth="138.0" layoutX="616.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../icon/im2.png" />
+                    </image>
+                </ImageView>
+                <MenuBar layoutX="3.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#saveEvent" text="Save" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#deleteEvent" text="Delete" />
+                                <MenuItem mnemonicParsing="false" onAction="#addEvent" text="Add" />
+                                <MenuItem mnemonicParsing="false" onAction="#changeEvent" text="Change" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#aboutEvent" text="About" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </children>
+        </AnchorPane>
+    </top>
+    <left>
+        <AnchorPane prefHeight="416.0" prefWidth="270.0" BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="textField" layoutX="2.0" layoutY="1.0" onKeyReleased="#suggestEvent" prefHeight="26.0" prefWidth="199.0" promptText="Nhap tu can tim..." />
+                <Button layoutX="200.0" layoutY="1.0" mnemonicParsing="false" onAction="#searchEvent" prefHeight="26.0" prefWidth="70.0" text="Search" />
+                <ListView fx:id="listView" layoutX="3.0" layoutY="32.0" onMouseClicked="#clickEvent" prefHeight="382.0" prefWidth="198.0" />
+            </children></AnchorPane>
+    </left>
+    <right>
+        <AnchorPane prefHeight="310.0" prefWidth="48.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" onAction="#speakEvent" prefHeight="26.0" text="Speak" />
+            </children></AnchorPane>
+    </right>
+    <center>
+        <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </center>
 </BorderPane>

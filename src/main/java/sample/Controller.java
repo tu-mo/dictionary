@@ -43,8 +43,8 @@ public class Controller {
     }
 
     public void searchEvent(ActionEvent actionEvent) throws IOException {
-        String text = textField.getText();
-        String str = dictionaryManagement.dictionarySearch(textField.getText());
+        String text = textField.getText().trim();
+        String str = dictionaryManagement.dictionarySearch(text);
         String result = "";
         if (str != null) {
             textArea.setText(str);
@@ -99,7 +99,7 @@ public class Controller {
     public void clickEvent(MouseEvent mouseEvent) throws IOException {
         String act = listView.getSelectionModel().getSelectedItem();
         if (act.isEmpty() || act == null) {
-            textField.setText("Nothing");
+            System.out.println("a");
         } else {
             textField.setText(act);
             suggestEvent();
@@ -113,7 +113,7 @@ public class Controller {
         if (textField.getText().trim().isEmpty()) {
 
         } else {
-            ArrayList arrayList = dictionaryManagement.suggest(textField.getText().trim());
+            ArrayList arrayList = dictionaryManagement.dictionarySuggest(textField.getText().trim());
             list.addAll(arrayList);
             listView.getItems().addAll(list);
         }
@@ -160,7 +160,7 @@ public class Controller {
                     alert.getButtonTypes().setAll(buttonYes, buttonCancle);
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonYes) {
-                        return new String(word.getText());
+                        return new String(word.getText().trim());
                     }
                 } else {
                     Alert alert2 = new Alert(Alert.AlertType.ERROR);
@@ -173,7 +173,7 @@ public class Controller {
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(userPass -> {
-            dictionaryManagement.dictionaryDelete(result.get());
+            dictionaryManagement.dictionaryDelete(result.get().trim());
         });
     }
 
@@ -213,7 +213,7 @@ public class Controller {
                     alert.setHeaderText("This word exists !!\nCannot add new \uD83D\uDE42 \uD83D\uDE42");
                     alert.show();
                 } else {
-                    return new Pair<>(target.getText(), explain.getText());
+                    return new Pair<>(target.getText().trim(), explain.getText());
                 }
             }
             return null;
@@ -221,7 +221,8 @@ public class Controller {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
         result.ifPresent(userPass -> {
-            dictionaryManagement.dictionaryAdd(new Word(userPass.getKey(), userPass.getValue()));
+            System.out.println(target.getText()+ explain.getText());
+            dictionaryManagement.dictionaryAdd(new Word(userPass.getKey().trim(), userPass.getValue()));
         });
     }
 
@@ -238,7 +239,7 @@ public class Controller {
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextArea word = new TextArea();
-        word.setText(dictionaryManagement.dictionarySearch(textField.getText()));
+        word.setText(dictionaryManagement.dictionarySearch(textField.getText().trim()));
         grid.add(word, 0, 0);
 
 
@@ -260,8 +261,18 @@ public class Controller {
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(userPass -> {
-            dictionaryManagement.dictionaryChange(textField.getText(), result.get());
+            dictionaryManagement.dictionaryChange(textField.getText().trim(), result.get());
         });
     }
 
+    public void speakEvent(ActionEvent actionEvent) {
+        dictionaryManagement.dictionarySpeak(textField.getText().trim());
+    }
+
+    public void aboutEvent(ActionEvent actionEvent) {
+    }
+
+    public void saveEvent(ActionEvent actionEvent) throws IOException {
+        dictionaryManagement.dictionarySave();
+    }
 }

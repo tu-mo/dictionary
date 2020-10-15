@@ -2,6 +2,8 @@ package dictionary;
 
 import java.io.*;
 import java.util.ArrayList;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 
 
 public class DictionaryManagement {
@@ -73,8 +75,13 @@ public class DictionaryManagement {
                             dictionary.setLists(new Word(target, explain), hash(target));
                         }
                         int index = str.indexOf('/');
-                        target = str.substring(1, index - 1);
-                        explain = str.substring(1, str.length());
+                        if (index == -1) {
+                            target = str.substring(1, str.length());
+                            explain = "";
+                        } else {
+                            target = str.substring(1, index - 1);
+                            explain = str.substring(index, str.length());
+                        }
                     } else {
                         explain += "\n";
                         explain += str;
@@ -93,22 +100,22 @@ public class DictionaryManagement {
         for (int i = 0; i < dictionary.getLists().length; i++) {
             for (int j = 0; j < dictionary.getLists()[i].size(); j++) {
                 if (((Word) dictionary.getLists()[i].get(j)).getTarget().equals(str)) {
-                    return ((Word) dictionary.getLists()[i].get(j)).getExplain();
+                    return ((Word) dictionary.getLists()[i].get(j)).getTarget() + " " +((Word) dictionary.getLists()[i].get(j)).getExplain();
                 }
             }
         }
         return null;
     }
 
-    public ArrayList suggest(String str) {
+    public ArrayList dictionarySuggest(String str) {
         ArrayList arrayList = new ArrayList();
         int index = hash(str);
         int num = str.length();
         for (int i = 0; i < dictionary.getLists()[index].size(); i++) {
             if (((Word) dictionary.getLists()[index].get(i)).getTarget().length() >= num)
-            if (((Word) dictionary.getLists()[index].get(i)).getTarget().substring(0, num).equals(str)) {
-                arrayList.add(((Word) dictionary.getLists()[index].get(i)).getTarget());
-            }
+                if (((Word) dictionary.getLists()[index].get(i)).getTarget().substring(0, num).equals(str)) {
+                    arrayList.add(((Word) dictionary.getLists()[index].get(i)).getTarget());
+                }
         }
         return arrayList;
     }
@@ -134,6 +141,51 @@ public class DictionaryManagement {
             if (((Word)dictionary.getLists()[index].get(i)).getTarget().equals(target)) {
                 ((Word)dictionary.getLists()[index].get(i)).setExplain(explain);
             }
+        }
+    }
+    public void dictionarySpeak(String words) {
+        Voice voice;
+        System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+        voice = VoiceManager.getInstance().getVoice("kevin16");
+        if (voice != null) {
+            voice.allocate();// Allocating Voice
+            try {
+                voice.setRate(190);// Setting the rate of the voice
+                voice.setPitch(150);// Setting the Pitch of the voice
+                voice.setVolume(3);// Setting the volume of the voice
+                voice.speak(words);
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+
+        } else {
+            throw new IllegalStateException("Cannot find voice: kevin16");
+        }
+    }
+
+    public void dictionarySave() throws IOException {
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter("dtb.txt");
+            for (int i = 0; i < dictionary.getLists().length; i++) {
+                for (int j = 0; j < dictionary.getLists()[i].size(); j++) {
+                    if (i == dictionary.getLists().length - 1 && j == dictionary.getLists()[i].size() - 1)
+                    {
+                        String str = ((Word)dictionary.getLists()[i].get(j)) + " " +((Word)dictionary.getLists()[i].get(j)).getExplain();
+                        fileWriter.write("@" + str);
+                    }
+                    else {
+                        String str = ((Word)dictionary.getLists()[i].get(j)) + " " +((Word)dictionary.getLists()[i].get(j)).getExplain();
+                        fileWriter.write("@" + str);
+                        fileWriter.write("\n");
+                    }
+                }
+            }
+        } catch (IOException exc) {
+            System.out.println(exc.getMessage());
+        } finally {
+            fileWriter.close();
         }
     }
 
