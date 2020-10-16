@@ -1,9 +1,13 @@
 package dictionary;
 
-import java.io.*;
-import java.util.ArrayList;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class DictionaryManagement {
@@ -30,7 +34,7 @@ public class DictionaryManagement {
                 while ((left <= right) && ((Word) arr.get(left)).getTarget().compareTo(((Word) arr.get(pivot)).getTarget()) < 0) {
                     left++;
                 }
-                while ((right >= left) && ((Word) arr.get(left)).getTarget().compareTo(((Word) arr.get(pivot)).getTarget()) > 0) {
+                while ((right >= left) && ((Word) arr.get(right)).getTarget().compareTo(((Word) arr.get(pivot)).getTarget()) > 0) {
                     right--;
                 }
                 if (left >= right) {
@@ -76,8 +80,9 @@ public class DictionaryManagement {
                         }
                         int index = str.indexOf('/');
                         if (index == -1) {
-                            target = str.substring(1, str.length());
-                            explain = "";
+                            int i = str.indexOf(' ');
+                            target = str.substring(1, i);
+                            explain = str.substring(i + 1, str.length());
                         } else {
                             target = str.substring(1, index - 1);
                             explain = str.substring(index, str.length());
@@ -100,7 +105,7 @@ public class DictionaryManagement {
         for (int i = 0; i < dictionary.getLists().length; i++) {
             for (int j = 0; j < dictionary.getLists()[i].size(); j++) {
                 if (((Word) dictionary.getLists()[i].get(j)).getTarget().equals(str)) {
-                    return ((Word) dictionary.getLists()[i].get(j)).getTarget() + " " +((Word) dictionary.getLists()[i].get(j)).getExplain();
+                    return ((Word) dictionary.getLists()[i].get(j)).getExplain();
                 }
             }
         }
@@ -132,17 +137,18 @@ public class DictionaryManagement {
     public void dictionaryAdd(Word word) {
         int index = hash(word.getTarget());
         dictionary.getLists()[index].add(word);
-        quickSort(dictionary.getLists()[index], 0, dictionary.getLists()[index].size() - 1 );
+        quickSort(dictionary.getLists()[index], 0, dictionary.getLists()[index].size() - 1);
     }
 
-    public void  dictionaryChange(String target, String explain) {
+    public void dictionaryChange(String target, String explain) {
         int index = hash(target);
         for (int i = 0; i < dictionary.getLists()[index].size(); i++) {
-            if (((Word)dictionary.getLists()[index].get(i)).getTarget().equals(target)) {
-                ((Word)dictionary.getLists()[index].get(i)).setExplain(explain);
+            if (((Word) dictionary.getLists()[index].get(i)).getTarget().equals(target)) {
+                ((Word) dictionary.getLists()[index].get(i)).setExplain(explain);
             }
         }
     }
+
     public void dictionarySpeak(String words) {
         Voice voice;
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
@@ -150,7 +156,7 @@ public class DictionaryManagement {
         if (voice != null) {
             voice.allocate();// Allocating Voice
             try {
-                voice.setRate(190);// Setting the rate of the voice
+                voice.setRate(150);// Setting the rate of the voice
                 voice.setPitch(150);// Setting the Pitch of the voice
                 voice.setVolume(3);// Setting the volume of the voice
                 voice.speak(words);
@@ -170,13 +176,11 @@ public class DictionaryManagement {
             fileWriter = new FileWriter("dtb.txt");
             for (int i = 0; i < dictionary.getLists().length; i++) {
                 for (int j = 0; j < dictionary.getLists()[i].size(); j++) {
-                    if (i == dictionary.getLists().length - 1 && j == dictionary.getLists()[i].size() - 1)
-                    {
-                        String str = ((Word)dictionary.getLists()[i].get(j)) + " " +((Word)dictionary.getLists()[i].get(j)).getExplain();
+                    if (i == dictionary.getLists().length - 1 && j == dictionary.getLists()[i].size() - 1) {
+                        String str = ((Word) dictionary.getLists()[i].get(j)).toString();
                         fileWriter.write("@" + str);
-                    }
-                    else {
-                        String str = ((Word)dictionary.getLists()[i].get(j)) + " " +((Word)dictionary.getLists()[i].get(j)).getExplain();
+                    } else {
+                        String str = ((Word) dictionary.getLists()[i].get(j)).toString();
                         fileWriter.write("@" + str);
                         fileWriter.write("\n");
                     }

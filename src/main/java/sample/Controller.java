@@ -47,7 +47,7 @@ public class Controller {
         String str = dictionaryManagement.dictionarySearch(text);
         String result = "";
         if (str != null) {
-            textArea.setText(str);
+            textArea.setText(text + " " + str);
         } else {
             for (int i = 0; i < dictionaryManagement.getDictionary().getLists().length; i++) {
                 for (int j = 0 ; j < dictionaryManagement.getDictionary().getLists()[i].size(); j++) {
@@ -103,7 +103,7 @@ public class Controller {
         } else {
             textField.setText(act);
             suggestEvent();
-            textArea.setText(dictionaryManagement.dictionarySearch(textField.getText()));
+            textArea.setText(act + " " + dictionaryManagement.dictionarySearch(act));
         }
     }
 
@@ -221,7 +221,6 @@ public class Controller {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
         result.ifPresent(userPass -> {
-            System.out.println(target.getText()+ explain.getText());
             dictionaryManagement.dictionaryAdd(new Word(userPass.getKey().trim(), userPass.getValue()));
         });
     }
@@ -270,6 +269,12 @@ public class Controller {
     }
 
     public void aboutEvent(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.setContentText("Project: Dictionary\n" +
+                             "Author: Phạm Ngọc Tú - 18021353\n" +
+                             "        Lê Chí Thọ");
+        alert.getButtonTypes().addAll(ButtonType.OK);
+        alert.show();
     }
 
     public void saveEvent(ActionEvent actionEvent) throws IOException {
