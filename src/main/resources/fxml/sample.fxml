@@ -28,7 +28,7 @@
                         <Image url="@../icon/im2.png" />
                     </image>
                 </ImageView>
-                <MenuBar layoutX="3.0">
+                <MenuBar layoutX="3.0" layoutY="2.0">
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
@@ -55,7 +55,7 @@
     <left>
         <AnchorPane prefHeight="416.0" prefWidth="270.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="textField" layoutX="2.0" layoutY="1.0" onKeyReleased="#suggestEvent" prefHeight="26.0" prefWidth="199.0" promptText="Nhap tu can tim..." />
+                <TextField fx:id="textField" layoutX="2.0" layoutY="1.0" onKeyReleased="#suggestEvent" prefHeight="26.0" prefWidth="199.0" promptText="Nhập từ cần tìm ..." />
                 <Button layoutX="200.0" layoutY="1.0" mnemonicParsing="false" onAction="#searchEvent" prefHeight="26.0" prefWidth="70.0" text="Search" />
                 <ListView fx:id="listView" layoutX="3.0" layoutY="32.0" onMouseClicked="#clickEvent" prefHeight="382.0" prefWidth="198.0" />
             </children></AnchorPane>
@@ -67,6 +67,6 @@
             </children></AnchorPane>
     </right>
     <center>
-        <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+        <TextArea fx:id="textArea" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
     </center>
 </BorderPane>

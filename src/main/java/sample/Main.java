@@ -10,6 +10,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    /**
+     * hiện giao diện đồ họa
+     * @param primaryStage dùng để cài đặt và hiển thị giao diện.
+     * @throws Exception để đẩy ngoại lệ ra ngoài.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/sample.fxml"));
@@ -20,7 +25,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
+    /**
+     * main.
+     * @param args nhận đối số dòng lệnh.
+     */
     public static void main(String[] args) {
         launch(args);
     }

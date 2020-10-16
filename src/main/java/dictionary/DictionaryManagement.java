@@ -11,30 +11,56 @@ import java.util.ArrayList;
 
 
 public class DictionaryManagement {
+    /**
+     * biến kiểu Dictionary chứa các word.
+     */
     private Dictionary dictionary;
 
+    /**
+     * constructor khởi tạo 1 đối tượng Dictionary và trả về tham chiếu tới đối tượng đó.
+     */
     public DictionaryManagement() {
         dictionary = new Dictionary();
     }
 
+    /**
+     * trả về tham chiếu tới đối tượng Dictionary;
+     *
+     * @return dictionary.
+     */
     public Dictionary getDictionary() {
         return dictionary;
     }
 
-    static int hash(String i) {
-        return i.charAt(0) - 97;
+    /**
+     * trả về key của từ được tính bằng chữ cái đầu.
+     *
+     * @param str lưu từ tiếng anh.
+     * @return key.
+     */
+    static int hash(String str) {
+        return str.charAt(0) - 97;
     }
 
+    /**
+     * sắp xếp các từ trong mảng theo alphabet.
+     *
+     * @param arr chứa mảng các từ.
+     * @param a   chứa chỉ số đầu của mảng.
+     * @param b   chứa chỉ số cuối của mảng.
+     */
     public static void quickSort(ArrayList arr, int a, int b) {
         if (a < b) {
             int left = a;
             int right = b - 1;
             int pivot = b;
             while (left <= right) {
-                while ((left <= right) && ((Word) arr.get(left)).getTarget().compareTo(((Word) arr.get(pivot)).getTarget()) < 0) {
+                while ((left <= right)
+                        && ((Word) arr.get(left)).getTarget().compareTo(((Word) arr.get(pivot)).getTarget()) < 0) {
                     left++;
                 }
-                while ((right >= left) && ((Word) arr.get(right)).getTarget().compareTo(((Word) arr.get(pivot)).getTarget()) > 0) {
+                while ((right >= left)
+                        && ((Word) arr.get(right)).getTarget().compareTo(((Word) arr.get(pivot)).getTarget()) > 0) {
                     right--;
                 }
                 if (left >= right) {
@@ -61,6 +87,11 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * đọc dữ liêu từ file và lưu vào arraylist.
+     *
+     * @throws IOException để đẩy ngoại lệ ra ngoài.
+     */
     public void insertFromFile() throws IOException {
         BufferedReader buff = null;
         try {
@@ -101,6 +132,13 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * trả về phiên âm và nghĩa của từ tiếng anh tương ứng.
+     * nếu không tìm thấy sẽ trả về null.
+     *
+     * @param str lưu từ tiếng anh cần tìm.
+     * @return trả về phiên âm và nhĩa của từ đó.
+     */
     public String dictionarySearch(String str) {
         for (int i = 0; i < dictionary.getLists().length; i++) {
             for (int j = 0; j < dictionary.getLists()[i].size(); j++) {
@@ -112,6 +150,12 @@ public class DictionaryManagement {
         return null;
     }
 
+    /**
+     * trả về danh sách các từ gợi ý.
+     *
+     * @param str chứa chuỗi người dùng nhập vào.
+     * @return arraylist.
+     */
     public ArrayList dictionarySuggest(String str) {
         ArrayList arrayList = new ArrayList();
         int index = hash(str);
@@ -125,6 +169,11 @@ public class DictionaryManagement {
         return arrayList;
     }
 
+    /**
+     * xóa từ tương ứng với từ tiếng anh.
+     *
+     * @param str chứa từ tiếng anh muốn xóa.
+     */
     public void dictionaryDelete(String str) {
         int index = hash(str);
         for (int i = 0; i < dictionary.getLists()[index].size(); i++) {
@@ -134,12 +183,23 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * thêm từ mới.
+     *
+     * @param word chứa từ muốn thêm.
+     */
     public void dictionaryAdd(Word word) {
         int index = hash(word.getTarget());
         dictionary.getLists()[index].add(word);
         quickSort(dictionary.getLists()[index], 0, dictionary.getLists()[index].size() - 1);
     }
 
+    /**
+     * sửa từ
+     *
+     * @param target  chứa từ tiếng anh
+     * @param explain chứa phiên âm và nghĩa sau khi thay đổi của từ
+     */
     public void dictionaryChange(String target, String explain) {
         int index = hash(target);
         for (int i = 0; i < dictionary.getLists()[index].size(); i++) {
@@ -149,12 +209,17 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * phát âm.
+     *
+     * @param words chứa từ muốn phát âm
+     */
     public void dictionarySpeak(String words) {
         Voice voice;
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         voice = VoiceManager.getInstance().getVoice("kevin16");
         if (voice != null) {
-            voice.allocate();// Allocating Voice
+            voice.allocate();// Allocating Voi                      ce
             try {
                 voice.setRate(150);// Setting the rate of the voice
                 voice.setPitch(150);// Setting the Pitch of the voice
@@ -170,6 +235,71 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * so sánh để tìm ra các từ gần đúng khi nhập từ không có trong file txt.
+     *
+     * @param s1 chứa từ so sánh.
+     * @param s2 chứa từ cần tìm.
+     * @return s1 có gần đúng vói s2 không.
+     */
+    public static boolean nearlyEqual(String s1, String s2) {
+        int errorAllow = (int) Math.round(s2.length() * 0.3);
+        if (s1.length() < (s2.length() - errorAllow) || s1.length() > (s2.length() + errorAllow)) {
+            return false;
+        }
+        int indexS2 = 0;
+        int indexS1 = 0;
+        int error = 0;
+        while (indexS2 < s2.length() && indexS1 < s1.length()) {
+            if (s2.charAt(indexS2) != s1.charAt(indexS1)) {
+                error++;
+                for (int k = 1; k <= errorAllow; k++) {
+                    if ((indexS2 + k < s2.length()) && s2.charAt(indexS2 + k) == s1.charAt(indexS1)) {
+                        indexS2 += k;
+                        error += k - 1;
+                        break;
+                    } else if ((indexS1 + k < s1.length()) && s2.charAt(indexS2) == s1.charAt(indexS1 + k)) {
+                        indexS1 += k;
+                        error += k - 1;
+                        break;
+                    }
+                }
+            }
+            indexS1++;
+            indexS2++;
+        }
+        error += s2.length() - indexS2 + s1.length() - indexS1;
+        if (error <= errorAllow) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * trả về danh sách các từ gần đúng.
+     *
+     * @param target chứa từ nhập vào.
+     * @return danh sách chứa từ gần đúng.
+     */
+    public String dictionarySearchNearly(String target) {
+        String result = "";
+        for (int i = 0; i < dictionary.getLists().length; i++) {
+            for (int j = 0; j < dictionary.getLists()[i].size(); j++) {
+                if (nearlyEqual(((Word) dictionary.getLists()[i].get(j)).getTarget(), target)) {
+                    result += ((Word) dictionary.getLists()[i].get(j)).getTarget();
+                    result += "\n";
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * lưu dữ liệu mới vào file.
+     *
+     * @throws IOException để đẩy ngoại lệ ra ngoài.
+     */
     public void dictionarySave() throws IOException {
         FileWriter fileWriter = null;
         try {
@@ -192,5 +322,4 @@ public class DictionaryManagement {
             fileWriter.close();
         }
     }
-
 }
