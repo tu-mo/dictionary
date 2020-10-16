@@ -274,7 +274,7 @@ public class Controller {
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setContentText("Project: Dictionary\n" +
                 "Author: Phạm Ngọc Tú - 18021353\n" +
-                "        Lê Chí Thọ - 18021236");
+                "             Lê Chí Thọ - 18021236");
         alert.getButtonTypes().addAll(ButtonType.OK);
         alert.show();
     }
