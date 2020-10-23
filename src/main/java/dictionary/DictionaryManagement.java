@@ -4,10 +4,10 @@ import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 import com.darkprograms.speech.translator.GoogleTranslate;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
@@ -215,22 +215,20 @@ public class DictionaryManagement {
      *
      * @param words chứa từ muốn phát âm
      */
-    public void dictionarySpeak(String words) {
+    public static void dictionarySpeak(String words) {
         Voice voice;
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         voice = VoiceManager.getInstance().getVoice("kevin16");
         if (voice != null) {
-            voice.allocate();// Allocating Voi                      ce
+            voice.allocate();
             try {
-                voice.setRate(150);// Setting the rate of the voice
-                voice.setPitch(150);// Setting the Pitch of the voice
-                voice.setVolume(3);// Setting the volume of the voice
+                voice.setRate(150);
+                voice.setPitch(150);
+                voice.setVolume(3);
                 voice.speak(words);
-
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-
         } else {
             throw new IllegalStateException("Cannot find voice: kevin16");
         }
@@ -324,13 +322,23 @@ public class DictionaryManagement {
         }
     }
 
-    public String translate(String str) {
-        String result = "";
-        try {
-            result = GoogleTranslate.translate("vi", str);
-        } catch (IOException exc) {
-            exc.printStackTrace();
+    public static String translate(String langFrom, String langTo, String text) throws IOException {
+        // INSERT YOU URL HERE
+        String urlStr = "https://script.google.com/macros/s/AKfycbzqt4HkQoDO-iwvT0jDJxrs0TlIshoa3SklBCZGnizNcAVXGA/exec" +
+                "?q=" + URLEncoder.encode(text, "UTF-8") +
+                "&target=" + langTo +
+                "&source=" + langFrom;
+        URL url = new URL(urlStr);
+        System.out.println(urlStr);
+        StringBuilder response = new StringBuilder();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
-        return result;
+        in.close();
+        return response.toString();
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="528.0" prefWidth="530.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphics.translateController">
+   <children>
+      <TextArea fx:id="textTarget" layoutX="9.0" layoutY="10.0" prefHeight="216.0" prefWidth="508.0" promptText="Nhập cụm từ muốn dịch ...." />
+      <TextArea fx:id="textExplain" editable="false" layoutX="10.0" layoutY="302.0" prefHeight="216.0" prefWidth="508.0" />
+      <Button layoutX="44.0" layoutY="237.0" mnemonicParsing="false" onAction="#enToVi" prefHeight="40.0" prefWidth="186.0" style="-fx-background-color: #2794d3;" text="Anh - Việt" textAlignment="CENTER" textFill="#e5e9eb">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
+      <Button layoutX="289.0" layoutY="236.0" mnemonicParsing="false" onAction="#viToEn" prefHeight="40.0" prefWidth="186.0" style="-fx-background-color: #2794d3;" text="Việt - Anh" textAlignment="CENTER" textFill="#e5e9eb">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

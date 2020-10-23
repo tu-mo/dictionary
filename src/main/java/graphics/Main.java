@@ -12,14 +12,15 @@ public class Main extends Application {
 
     /**
      * hiện giao diện đồ họa
+     *
      * @param primaryStage dùng để cài đặt và hiển thị giao diện.
      * @throws Exception để đẩy ngoại lệ ra ngoài.
      */
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/graphicsDict.fxml"));
         primaryStage.setTitle("Dictionary");
-        Image image = new Image("icon/icon.png");
+        Image image = new Image("icon/logo.png");
         primaryStage.getIcons().add(image);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -27,6 +28,7 @@ public class Main extends Application {
 
     /**
      * main.
+     *
      * @param args nhận đối số dòng lệnh.
      */
     public static void main(String[] args) {

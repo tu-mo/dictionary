@@ -7,11 +7,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -265,7 +270,7 @@ public class Controller {
      * @param actionEvent ...
      */
     public void speechEvent(ActionEvent actionEvent) {
-        dictionaryManagement.dictionarySpeak(textField.getText().trim());
+        DictionaryManagement.dictionarySpeak(textField.getText().trim());
     }
 
     /**
@@ -287,12 +292,31 @@ public class Controller {
      *
      * @param actionEvent ...
      */
-    public void saveEvent(ActionEvent actionEvent) throws IOException {
-        dictionaryManagement.dictionarySave();
+    public void saveEvent(ActionEvent actionEvent) {
+        try {
+            dictionaryManagement.dictionarySave();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void googleTranslate(ActionEvent actionEvent) {
-        String str = dictionaryManagement.translate(textField.getText());
-        textArea.setText(str);
+    /**
+     * gọi đến scene sử lý translate.
+     *
+     * @param actionEvent ...
+     */
+    public void translateEvent(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/fxml/translate.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setTitle("Dich văn bản");
+        Image image = new Image("icon/translate.png");
+        stage.getIcons().add(image);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
