@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphics.Controller">
     <top>
         <AnchorPane prefHeight="89.0" prefWidth="600.0" style="-fx-border-color: #7bcc6d;" BorderPane.alignment="CENTER">
             <children>
@@ -58,12 +58,13 @@
                 <TextField fx:id="textField" layoutX="2.0" layoutY="1.0" onKeyReleased="#suggestEvent" prefHeight="26.0" prefWidth="199.0" promptText="Nhập từ cần tìm ..." />
                 <Button layoutX="200.0" layoutY="1.0" mnemonicParsing="false" onAction="#searchEvent" prefHeight="26.0" prefWidth="70.0" text="Search" />
                 <ListView fx:id="listView" layoutX="3.0" layoutY="32.0" onMouseClicked="#clickEvent" prefHeight="382.0" prefWidth="198.0" />
+            <Button layoutX="202.0" layoutY="50.0" mnemonicParsing="false" onAction="#googleTranslate" prefHeight="32.0" prefWidth="68.0" text="gg dịch" />
             </children></AnchorPane>
     </left>
     <right>
         <AnchorPane prefHeight="310.0" prefWidth="48.0" BorderPane.alignment="CENTER">
             <children>
-                <Button mnemonicParsing="false" onAction="#speakEvent" prefHeight="26.0" text="Speak" />
+                <Button mnemonicParsing="false" onAction="#speechEvent" prefHeight="26.0" text="Speech" />
             </children></AnchorPane>
     </right>
     <center>

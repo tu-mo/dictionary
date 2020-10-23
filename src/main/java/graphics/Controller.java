@@ -1,4 +1,4 @@
-package sample;
+package graphics;
 
 
 import dictionary.DictionaryManagement;
@@ -37,21 +37,22 @@ public class Controller {
 
     /**
      * constructor khởi tạo ra đối tượng DictionaryManagement và đọc file txt chứa dữ liệu từ điển.
-     *
-     * @throws IOException để đẩy ngoại lệ ra ngoài.
      */
-    public Controller() throws IOException {
+    public Controller() {
         dictionaryManagement = new DictionaryManagement();
-        dictionaryManagement.insertFromFile();
+        try {
+            dictionaryManagement.insertFromFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * bắt sự kiện khi bấm "Search".
      *
      * @param actionEvent ...
-     * @throws IOException để đẩy ngoại lệ ra ngoài.
      */
-    public void searchEvent(ActionEvent actionEvent) throws IOException {
+    public void searchEvent(ActionEvent actionEvent) {
         String text = textField.getText().trim();
         String str = dictionaryManagement.dictionarySearch(text);
         if (str != null) {
@@ -66,9 +67,8 @@ public class Controller {
      * bắt sự kiện khi người dùng bấm "Search" sẽ trả về nghĩa hoặc từ gần đúng.
      *
      * @param mouseEvent ...
-     * @throws IOException để đẩy ngoại lệ ra ngoài.
      */
-    public void clickEvent(MouseEvent mouseEvent) throws IOException {
+    public void clickEvent(MouseEvent mouseEvent) {
         String act = listView.getSelectionModel().getSelectedItem();
         if (act != null) {
             textField.setText(act);
@@ -79,10 +79,8 @@ public class Controller {
 
     /**
      * bắt sự kiện khi người dùng nhập vào sẽ hiện gợi ý và có thể bấm vào gợi ý để xem nghĩa.
-     *
-     * @throws IOException
      */
-    public void suggestEvent() throws IOException {
+    public void suggestEvent() {
         listView.getItems().clear();
         list.removeAll(list);
         if (textField.getText().trim().isEmpty()) {
@@ -214,46 +212,51 @@ public class Controller {
      * bắt sự kiện khi người dùng bấm "Change" sẽ hiện phiên âm và nghĩa hiện tại và cho phép thay đổi
      *
      * @param actionEvent ...
-     * @throws IOException để đẩy ngoại lệ ra ngoài.
      */
-    public void changeEvent(ActionEvent actionEvent) throws IOException {
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Change");
-        dialog.setHeaderText("Mời thay đổi phiên âm và nghĩa của '" + textField.getText().trim() + "' !");
+    public void changeEvent(ActionEvent actionEvent) {
+        if (dictionaryManagement.dictionarySearch(textField.getText().trim()) != null) {
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Change");
+            dialog.setHeaderText("Mời thay đổi phiên âm và nghĩa của \"" + textField.getText().trim() + "\" !");
 
-        ButtonType changeButton = new ButtonType("Change", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(changeButton, ButtonType.CANCEL);
+            ButtonType changeButton = new ButtonType("Change", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(changeButton, ButtonType.CANCEL);
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
 
-        TextArea word = new TextArea();
-        word.setText(dictionaryManagement.dictionarySearch(textField.getText().trim()));
-        grid.add(word, 0, 0);
+            TextArea word = new TextArea();
+            word.setText(dictionaryManagement.dictionarySearch(textField.getText().trim()));
+            grid.add(word, 0, 0);
 
 
-        Node loginButton = dialog.getDialogPane().lookupButton(changeButton);
-        loginButton.setDisable(true);
+            Node loginButton = dialog.getDialogPane().lookupButton(changeButton);
+            loginButton.setDisable(true);
 
-        word.textProperty().addListener((observableValue, s, t1) -> {
-            loginButton.setDisable(t1.trim().isEmpty());
-        });
+            word.textProperty().addListener((observableValue, s, t1) -> {
+                loginButton.setDisable(t1.trim().isEmpty());
+            });
 
-        dialog.getDialogPane().setContent(grid);
+            dialog.getDialogPane().setContent(grid);
 
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == changeButton) {
-                return new String(word.getText());
-            }
-            return null;
-        });
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == changeButton) {
+                    return new String(word.getText());
+                }
+                return null;
+            });
 
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(userPass -> {
-            dictionaryManagement.dictionaryChange(textField.getText().trim(), result.get());
-        });
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(userPass -> {
+                dictionaryManagement.dictionaryChange(textField.getText().trim(), result.get());
+            });
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Không tìm thấy từ \"" + textField.getText().trim() + "\" !\uD83D\uDE42 \uD83D\uDE42");
+            alert.show();
+        }
     }
 
     /**
@@ -261,7 +264,7 @@ public class Controller {
      *
      * @param actionEvent ...
      */
-    public void speakEvent(ActionEvent actionEvent) {
+    public void speechEvent(ActionEvent actionEvent) {
         dictionaryManagement.dictionarySpeak(textField.getText().trim());
     }
 
@@ -283,9 +286,13 @@ public class Controller {
      * bắt sự kiện khi bấm "Save" thì dưu liệu mới vào file txt.
      *
      * @param actionEvent ...
-     * @throws IOException để đẩy ngoại lệ ra ngoài.
      */
     public void saveEvent(ActionEvent actionEvent) throws IOException {
         dictionaryManagement.dictionarySave();
+    }
+
+    public void googleTranslate(ActionEvent actionEvent) {
+        String str = dictionaryManagement.translate(textField.getText());
+        textArea.setText(str);
     }
 }

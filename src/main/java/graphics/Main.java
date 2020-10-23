@@ -1,4 +1,4 @@
-package sample;
+package graphics;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/graphicsDict.fxml"));
         primaryStage.setTitle("Dictionary");
         Image image = new Image("icon/icon.png");
         primaryStage.getIcons().add(image);

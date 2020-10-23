@@ -2,6 +2,7 @@ package dictionary;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
+import com.darkprograms.speech.translator.GoogleTranslate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -126,7 +127,7 @@ public class DictionaryManagement {
             } while (str != null);
 
         } catch (IOException exc) {
-            System.out.println(exc.getMessage());
+            exc.printStackTrace();
         } finally {
             buff.close();
         }
@@ -321,5 +322,15 @@ public class DictionaryManagement {
         } finally {
             fileWriter.close();
         }
+    }
+
+    public String translate(String str) {
+        String result = "";
+        try {
+            result = GoogleTranslate.translate("vi", str);
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+        return result;
     }
 }
