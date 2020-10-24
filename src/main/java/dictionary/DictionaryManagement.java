@@ -323,7 +323,7 @@ public class DictionaryManagement {
     }
 
     /**
-     * dichjg từ từ 'langFrom' -> 'langTo'.
+     * dịch đoạn văn từ 'langFrom' -> 'langTo'.
      *
      * @param langFrom là kiểu ngôn ngữ cũ.
      * @param langTo   là kiểu ngôn ngũ mới.
