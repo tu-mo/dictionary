@@ -322,12 +322,25 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * dichjg từ từ 'langFrom' -> 'langTo'.
+     *
+     * @param langFrom là kiểu ngôn ngữ cũ.
+     * @param langTo   là kiểu ngôn ngũ mới.
+     * @param text     là đoạn cần dịch.
+     * @return chuỗi sau khi dịch.
+     */
     public static String translate(String langFrom, String langTo, String text) throws IOException {
         // INSERT YOU URL HERE
-        String urlStr = "https://script.google.com/macros/s/AKfycbzqt4HkQoDO-iwvT0jDJxrs0TlIshoa3SklBCZGnizNcAVXGA/exec" +
-                "?q=" + URLEncoder.encode(text, "UTF-8") +
-                "&target=" + langTo +
-                "&source=" + langFrom;
+        String urlStr = null;
+        try {
+            urlStr = "https://script.google.com/macros/s/AKfycbzqt4HkQoDO-iwvT0jDJxrs0TlIshoa3SklBCZGnizNcAVXGA/exec" +
+                    "?q=" + URLEncoder.encode(text, "UTF-8") +
+                    "&target=" + langTo +
+                    "&source=" + langFrom;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         URL url = new URL(urlStr);
         System.out.println(urlStr);
         StringBuilder response = new StringBuilder();
